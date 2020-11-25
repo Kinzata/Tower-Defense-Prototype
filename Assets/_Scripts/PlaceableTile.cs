@@ -17,17 +17,20 @@ public class PlaceableTile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public Vector3 GetPlacementPosition(){
         return gameObject.transform.position + placementPositionAdjustment;
     }
 
-    public void PlaceObject(GameObject objectToPlace) {
+    public GameObject PlaceTower(GameObject objectToPlace) {
         if( placedTower == null ) {
-            placedTower = Instantiate(objectToPlace, GetPlacementPosition(), Quaternion.identity).GetComponent<Tower>();
+            var newObject = Instantiate(objectToPlace, GetPlacementPosition(), Quaternion.identity);
+            placedTower = newObject.GetComponent<Tower>();
+            return newObject;
         }
+        else return null;
     }
 
     public Tower GetPlacedTower(){

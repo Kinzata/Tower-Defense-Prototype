@@ -43,7 +43,7 @@ public class DeveloperToolsController : MonoBehaviour
 
         var placeableTile = objectSelected.GetComponent<PlaceableTile>();
         if(placeableTile) {
-            placeableTile.PlaceObject(TowerPrefab);
+            placeableTile.PlaceTower(TowerPrefab);
         }
     }
 

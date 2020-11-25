@@ -9,10 +9,15 @@ public class Tower : MonoBehaviour
 
     private TowerData towerData;
 
+    public void SetTowerData(TowerData data)
+    {
+        towerData = data;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        towerData = new TowerData();
+
     }
 
     // Update is called once per frame

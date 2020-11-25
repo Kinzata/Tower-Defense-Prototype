@@ -13,8 +13,12 @@ public class PlayerController : MonoBehaviour
     private GameObject selectedOverlay;
 
     [Header("Tower Placement")]
-    [SerializeField] Tower TowerPrefab;
+    private TowerInventoryController towerInventoryController;
     [SerializeField] TowerWeapon WeaponPrefab;
+
+    [Header("Player Resources")]
+    [SerializeField] int CollectedCoins;
+
     private PlaceableTile selectedTile;
     private Camera mainCamera;
     // Start is called before the first frame update
@@ -23,6 +27,8 @@ public class PlayerController : MonoBehaviour
         mainCamera = Camera.main;
         selectedOverlay = Instantiate(SelectedOverlayPrefab, Vector3.zero, Quaternion.identity);
         selectedOverlay.SetActive(false);
+
+        towerInventoryController = GameObject.FindObjectOfType<TowerInventoryController>();
     }
 
     // Update is called once per frame
@@ -55,10 +61,8 @@ public class PlayerController : MonoBehaviour
 
     public void PlaceTower(){
         if( selectedTile == null ) { return; }
-
-        var placeableTile = selectedTile;
-        if(placeableTile) {
-            placeableTile.PlaceObject(TowerPrefab.gameObject);
+        else {
+            towerInventoryController.BuildSelectedTower(selectedTile);
         }
     }
 

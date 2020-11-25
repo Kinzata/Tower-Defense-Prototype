@@ -18,7 +18,6 @@ public class TowerWeapon : MonoBehaviour
 
     void Start()
     {
-        towerData = new TowerData();
         projectile = GetComponentInChildren<Projectile>();
         reloadCountDown = GetWeaponFireRate();
     }
@@ -60,17 +59,17 @@ public class TowerWeapon : MonoBehaviour
 
     public float GetWeaponRange()
     {
-        return weaponRange * towerData.GetRangeModifier();
+        return weaponRange * (towerData?.GetRangeModifier() ?? 1f);
     }
 
     public float GetWeaponDamage()
     {
-        return weaponDamage * towerData.GetDamageModifier();
+        return weaponDamage * (towerData?.GetDamageModifier() ?? 1f);
     }
 
     public float GetWeaponFireRate()
     {
-        return reloadSpeed * towerData.GetReloadModifier();
+        return reloadSpeed * (towerData?.GetReloadModifier() ?? 1f);
     }
     private void FireAtTarget()
     {
