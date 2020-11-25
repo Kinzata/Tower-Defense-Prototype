@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TowerWeapon WeaponPrefab;
 
     [Header("Player Resources")]
-    [SerializeField] int CollectedCoins;
+    [SerializeField] int CollectedCurrency = 500;
 
     private PlaceableTile selectedTile;
     private Camera mainCamera;
@@ -60,9 +60,12 @@ public class PlayerController : MonoBehaviour
     }
 
     public void PlaceTower(){
-        if( selectedTile == null ) { return; }
+        if( selectedTile == null || !towerInventoryController.CanBuyTower(CollectedCurrency)) { return; }
         else {
+            var costOfTower = towerInventoryController.GetCurrentTowerCost();
             towerInventoryController.BuildSelectedTower(selectedTile);
+            towerInventoryController.BuyTower();
+            CollectedCurrency -= costOfTower;
         }
     }
 

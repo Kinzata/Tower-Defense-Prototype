@@ -8,12 +8,25 @@ public class TowerInventoryController : MonoBehaviour
     [SerializeField] TowerDataConfig[] towerDataConfigurations = new TowerDataConfig[0];
 
     [SerializeField] int BaseTowerCost = 100;
+    private int CurrentTowerCost = 0;
     [SerializeField] int BaseWeaponCost = 100;
 
 
     void Start()
     {
+        CurrentTowerCost = BaseTowerCost;
+    }
 
+    public int GetCurrentTowerCost(){
+        return CurrentTowerCost;
+    }
+
+    public bool CanBuyTower(int currency) {
+        return CurrentTowerCost < currency;
+    }
+
+    public void BuyTower() {
+        CurrentTowerCost = (int)(CurrentTowerCost * 1.1f);
     }
 
     public TowerDataConfig GetSelectedTowerDataConfig() {
