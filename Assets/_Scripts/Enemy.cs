@@ -5,17 +5,20 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] float maxHealth = 2f;
+    [SerializeField] int currencyOnDrop = 20;
     private float health;
     public float SpawnHeightAdjustment = 0f;
     private Waypoint currentWaypoint;
     private float moveSpeed = 0f;
     private EnemyHealthBarController healthBarController;
+    private PlayerController playerController;
 
     // Start is called before the first frame update
     void Start()
     {
         AdjustStartPosition();
         healthBarController = GetComponent<EnemyHealthBarController>();
+        playerController = GameObject.FindObjectOfType<PlayerController>();
         health = maxHealth;
     }
 
@@ -61,6 +64,8 @@ public class Enemy : MonoBehaviour
     }
 
     private void Die() {
+        playerController.RewardCurrency(currencyOnDrop);
         Destroy(gameObject);
     }
+
 }

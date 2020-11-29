@@ -81,6 +81,11 @@ public class PlayerController : MonoBehaviour
         tower.BuildWeapon(WeaponPrefab.gameObject);
     }
 
+    public void RewardCurrency(int rewardValue){
+        CollectedCurrency += rewardValue;
+        currencyDisplay.UpdateText(CollectedCurrency);
+    }
+
     private void DeselectTile() {
         if( selectedOverlay == null ) { return; }
         selectedOverlay.SetActive(false);
