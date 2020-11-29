@@ -17,11 +17,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TowerWeapon WeaponPrefab;
 
     [Header("Player Resources")]
+    [SerializeField] CurrencyDisplay currencyDisplay;
     [SerializeField] int CollectedCurrency = 500;
 
     private PlaceableTile selectedTile;
     private Camera mainCamera;
-    // Start is called before the first frame update
+
     void Start()
     {
         mainCamera = Camera.main;
@@ -29,6 +30,8 @@ public class PlayerController : MonoBehaviour
         selectedOverlay.SetActive(false);
 
         towerInventoryController = GameObject.FindObjectOfType<TowerInventoryController>();
+
+        currencyDisplay.UpdateText(CollectedCurrency);
     }
 
     // Update is called once per frame
@@ -66,6 +69,7 @@ public class PlayerController : MonoBehaviour
             towerInventoryController.BuildSelectedTower(selectedTile);
             towerInventoryController.BuyTower();
             CollectedCurrency -= costOfTower;
+            currencyDisplay.UpdateText(CollectedCurrency);
         }
     }
 
