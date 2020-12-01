@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private GameObject selectedOverlay;
 
     [Header("Tower Placement")]
-    private TowerInventoryController towerInventoryController;
+    private InventoryController inventoryController;
     [SerializeField] TowerWeapon WeaponPrefab;
 
     [Header("Player Resources")]
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
         selectedOverlay = Instantiate(SelectedOverlayPrefab, Vector3.zero, Quaternion.identity);
         selectedOverlay.SetActive(false);
 
-        towerInventoryController = GameObject.FindObjectOfType<TowerInventoryController>();
+        inventoryController = GameObject.FindObjectOfType<InventoryController>();
 
         currencyDisplay.UpdateText(CollectedCurrency);
     }
@@ -63,22 +63,26 @@ public class PlayerController : MonoBehaviour
     }
 
     public void PlaceTower(){
-        if( selectedTile == null || !towerInventoryController.CanBuyTower(CollectedCurrency)) { return; }
+        if( selectedTile == null || !inventoryController.CanBuyTower(CollectedCurrency)) { return; }
         else {
-            var costOfTower = towerInventoryController.GetCurrentTowerCost();
-            towerInventoryController.BuildSelectedTower(selectedTile);
-            towerInventoryController.BuyTower();
+            var costOfTower = inventoryController.GetCurrentTowerCost();
+            inventoryController.BuildSelectedTower(selectedTile);
+            inventoryController.BuyTower();
             CollectedCurrency -= costOfTower;
             currencyDisplay.UpdateText(CollectedCurrency);
         }
     }
 
     public void PlaceTowerWeapon() {
-        if( selectedTile == null ) { return; }
+        if( selectedTile == null || !inventoryController.CanBuyWeapon(CollectedCurrency)) { return; }
         var tower = selectedTile.GetPlacedTower();
         if( tower == null ) { return; }
 
-        tower.BuildWeapon(WeaponPrefab.gameObject);
+        var costOfWeapon = inventoryController.GetCurrentWeaponCost();
+        inventoryController.BuildSelectedWeapon(tower);
+        inventoryController.BuyWeapon();
+        CollectedCurrency -= costOfWeapon;
+        currencyDisplay.UpdateText(CollectedCurrency);
     }
 
     public void RewardCurrency(int rewardValue){

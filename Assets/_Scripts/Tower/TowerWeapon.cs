@@ -11,6 +11,7 @@ public class TowerWeapon : MonoBehaviour
     private Projectile projectile;
 
     private TowerData towerData;
+    private WeaponData weaponData;
     [SerializeField] float weaponRange = 2f;
     [SerializeField] float reloadSpeed = 3f;
     [SerializeField] float weaponDamage = 1f;
@@ -55,6 +56,11 @@ public class TowerWeapon : MonoBehaviour
     public void SetTowerData(TowerData data)
     {
         towerData = data;
+    }
+
+    public void SetWeaponData(WeaponData data)
+    {
+        weaponData = data;
     }
 
     public float GetWeaponRange()
