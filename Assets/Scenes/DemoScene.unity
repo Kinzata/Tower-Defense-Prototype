@@ -495,7 +495,7 @@ GameObject:
   - component: {fileID: 288003497}
   - component: {fileID: 288003498}
   m_Layer: 0
-  m_Name: TowerInventoryController
+  m_Name: InventoryController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -524,13 +524,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 288003496}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f3bceea62a268540816e21ca34f2380, type: 3}
+  m_Script: {fileID: 11500000, guid: 931cbc05be7cd6442aa5ea72597e29d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   towerDataConfigurations:
   - {fileID: 11400000, guid: d5a5f8452c7dab648aa63d68be3ca9e7, type: 2}
+  weaponDataConfigurations:
+  - {fileID: 11400000, guid: 67ec5fcc586b9f5408bc27e28e05990f, type: 2}
   BaseTowerCost: 100
+  TowerCostInflation: 1.1
   BaseWeaponCost: 100
+  WeaponsCostInflation: 1.1
 --- !u!1001 &336325588
 PrefabInstance:
   m_ObjectHideFlags: 0

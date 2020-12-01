@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51949c36f9942c2428c4c82f9c2e0752, type: 3}
   m_Name: Ballista
   m_EditorClassIdentifier: 
-  WeaponPrefab: {fileID: 0}
+  WeaponPrefab: {fileID: 5985294383270185809, guid: 0ef09d94beb421444824db43349dbd4b,
+    type: 3}
   RangeModifier: 1
   DamageModifier: 1
   ReloadModifier: 1
