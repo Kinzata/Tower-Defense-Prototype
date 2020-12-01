@@ -8,11 +8,13 @@ public class CurrencyDisplay : MonoBehaviour
 
     private string currencyPrefix = "Coins: ";
 
+    void Awake() {
+        currencyText = gameObject.GetComponent<TextMeshProUGUI>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        currencyText = gameObject.GetComponent<TextMeshProUGUI>();
         currencyText.text = currencyPrefix + "0000";
     }
 
