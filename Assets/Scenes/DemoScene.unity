@@ -1555,7 +1555,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5955546e1b10c4d847ca930a2c5866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 100
 --- !u!1 &740074424
 GameObject:
   m_ObjectHideFlags: 0
@@ -3896,6 +3895,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GridCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 586844530508842743, guid: cd62cc4c89612ff43ab1fc1dfb77149f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2731070135575955629, guid: cd62cc4c89612ff43ab1fc1dfb77149f,
         type: 3}

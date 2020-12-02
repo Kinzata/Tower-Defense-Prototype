@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     private float health;
     public float SpawnHeightAdjustment = 0f;
     private Waypoint currentWaypoint;
+    private Vector3 currentTargetPosition;
     private float moveSpeed = 0f;
     private EnemyHealthBarController healthBarController;
     private PlayerController playerController;
@@ -40,7 +41,17 @@ public class Enemy : MonoBehaviour
         }
         healthBarController.UpdateHealthBar(maxHealth, health);
     }
-    public void SetCurrentWaypoint(Waypoint waypoint) { currentWaypoint = waypoint; }
+    public void SetCurrentWaypoint(Waypoint waypoint) {
+        currentWaypoint = waypoint;
+        currentTargetPosition = waypoint.point;
+    }
+
+    public void AdjustWaypointTargetPosition(){
+        var offset = Random.insideUnitSphere;
+        offset.Scale(new Vector3(0.25f,0.25f,0.25f));
+        currentTargetPosition = currentTargetPosition + offset;
+    }
+
     public void SetMoveSpeed(float speed) { moveSpeed = speed; }
 
     private void AdjustStartPosition() {
@@ -49,13 +60,14 @@ public class Enemy : MonoBehaviour
 
     private void MoveTowardsWaypoint(){
         	var currentPos = transform.position;
-			var targetPos = currentWaypoint.point + new Vector3(0, SpawnHeightAdjustment, 0);
+			var targetPos = currentTargetPosition + new Vector3(0, SpawnHeightAdjustment, 0);
 
 			var moveThisFrame = moveSpeed * Time.deltaTime;
 			transform.position = Vector3.MoveTowards(currentPos, targetPos, moveThisFrame);
 
 			if( Vector3.Distance(currentPos,targetPos) < 0.1f) {
-				currentWaypoint = currentWaypoint.GetNextWaypoint();
+				SetCurrentWaypoint(currentWaypoint.GetNextWaypoint());
+                AdjustWaypointTargetPosition();
 			}
     }
 
