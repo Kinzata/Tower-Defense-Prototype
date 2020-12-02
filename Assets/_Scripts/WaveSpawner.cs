@@ -13,12 +13,17 @@ public class WaveSpawner : MonoBehaviour {
 	void Start () {
 		levelPath = FindObjectOfType<LevelPath>();
 
-		SpawnNextWave();
+		StartCoroutine(SpawnWaveAfterSeconds(3));
 	}
-	
+
 
 	private void SpawnNextWave() {
 		var routine = StartCoroutine(SpawnWave(currentWaveIndex++));
+	}
+
+	private IEnumerator SpawnWaveAfterSeconds(int seconds) {
+		yield return new WaitForSeconds(seconds);
+		SpawnNextWave();
 	}
 
     private IEnumerator SpawnWave(int index)
