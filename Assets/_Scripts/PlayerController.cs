@@ -11,16 +11,19 @@ public class PlayerController : MonoBehaviour
     [Header("Tile / Selection")]
     [SerializeField] GameObject SelectedOverlayPrefab;
     private GameObject selectedOverlay;
+    private PlaceableTile selectedTile;
 
     [Header("Tower Placement")]
-    private InventoryController inventoryController;
     [SerializeField] TowerWeapon WeaponPrefab;
+    private InventoryController inventoryController;
 
     [Header("Player Resources")]
     [SerializeField] CurrencyDisplay currencyDisplay;
     [SerializeField] int CollectedCurrency = 500;
+    [SerializeField] int BaseHealth = 100;
 
-    private PlaceableTile selectedTile;
+    private PlayerBase PlayerBase;
+
     private Camera mainCamera;
 
     void Start()
@@ -30,6 +33,7 @@ public class PlayerController : MonoBehaviour
         selectedOverlay.SetActive(false);
 
         inventoryController = GameObject.FindObjectOfType<InventoryController>();
+        PlayerBase = GameObject.FindObjectOfType<PlayerBase>();
 
         currencyDisplay.UpdateText(CollectedCurrency);
     }
@@ -88,6 +92,16 @@ public class PlayerController : MonoBehaviour
     public void RewardCurrency(int rewardValue){
         CollectedCurrency += rewardValue;
         currencyDisplay.UpdateText(CollectedCurrency);
+    }
+
+    public void TakeDamage(int damage){
+        BaseHealth -= damage;
+
+        if( BaseHealth <= 0 ){
+            Destroy(PlayerBase.gameObject);
+
+            // End score screen transition
+        }
     }
 
     private void DeselectTile() {

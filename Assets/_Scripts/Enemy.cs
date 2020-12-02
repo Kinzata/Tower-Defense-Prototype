@@ -60,6 +60,7 @@ public class Enemy : MonoBehaviour
     }
 
     private void HandlePathComplete() {
+        playerController.TakeDamage(10);
         Destroy(gameObject);
     }
 
