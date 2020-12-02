@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
+  currencyOnDrop: 20
   SpawnHeightAdjustment: 0.5
 --- !u!114 &8899756025117450455
 MonoBehaviour:

@@ -43,7 +43,9 @@ public class Enemy : MonoBehaviour
     }
     public void SetCurrentWaypoint(Waypoint waypoint) {
         currentWaypoint = waypoint;
-        currentTargetPosition = waypoint.point;
+        if(currentWaypoint != null){
+            currentTargetPosition = currentWaypoint.point + new Vector3(0, SpawnHeightAdjustment, 0);
+        }
     }
 
     public void AdjustWaypointTargetPosition(){
@@ -60,7 +62,7 @@ public class Enemy : MonoBehaviour
 
     private void MoveTowardsWaypoint(){
         	var currentPos = transform.position;
-			var targetPos = currentTargetPosition + new Vector3(0, SpawnHeightAdjustment, 0);
+			var targetPos = currentTargetPosition;
 
 			var moveThisFrame = moveSpeed * Time.deltaTime;
 			transform.position = Vector3.MoveTowards(currentPos, targetPos, moveThisFrame);
