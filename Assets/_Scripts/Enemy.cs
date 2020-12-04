@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] float maxHealth = 2f;
     [SerializeField] int currencyOnDrop = 20;
     private float health;
-    public float SpawnHeightAdjustment = 0f;
+    [SerializeField] float SpawnHeightAdjustment = 0f;
     private Waypoint currentWaypoint;
     private Vector3 currentTargetPosition;
     private float moveSpeed = 0f;
