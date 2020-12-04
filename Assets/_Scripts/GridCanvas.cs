@@ -54,8 +54,8 @@ public class GridCanvas : MonoBehaviour
     }
 
     void OnDrawGizmos() {
-        // Gizmos.DrawSphere(new Vector3(-1, 0.2001f, 0), 0.02f);
-        // Gizmos.DrawLine(new Vector3(-1, 0.2001f, 0), new Vector3(-1, -1, 0));
+        Gizmos.DrawSphere(new Vector3(-1, 0.2001f, 0), 0.02f);
+        Gizmos.DrawLine(new Vector3(-1, 0.2001f, 0), new Vector3(-1, -1, 0));
     }
 
 

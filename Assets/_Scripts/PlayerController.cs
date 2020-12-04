@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     private PlayerBase PlayerBase;
 
     private Camera mainCamera;
+    private GameObject InGameUI;
+    private GameObject GameOverUI;
 
     void Start()
     {
@@ -36,6 +38,11 @@ public class PlayerController : MonoBehaviour
         PlayerBase = GameObject.FindObjectOfType<PlayerBase>();
 
         currencyDisplay.UpdateText(CollectedCurrency);
+
+        InGameUI = GameObject.FindGameObjectWithTag("InGameUI");
+        InGameUI.SetActive(true);
+        GameOverUI = GameObject.FindGameObjectWithTag("GameOverUI");
+        GameOverUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -97,11 +104,15 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage){
         BaseHealth -= damage;
 
-        if( BaseHealth <= 0 ){
+        if( BaseHealth <= 0 && PlayerBase != null ){
             Destroy(PlayerBase.gameObject);
-
-            // End score screen transition
+            GameOver();
         }
+    }
+
+    private void GameOver() {
+        InGameUI.SetActive(false);
+        GameOverUI.SetActive(true);
     }
 
     private void DeselectTile() {
