@@ -106,3 +106,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placementPositionAdjustment: {x: 0, y: 0.2, z: 0}
+  materialIndexForHover: 1
+  highlightMaterialColor: {r: 0.13510147, g: 0.8679245, b: 0.60888004, a: 1}
