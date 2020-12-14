@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] int CollectedCurrency = 500;
     [SerializeField] int BaseHealth = 100;
 
+    [Header("Controls")]
+    public float scrollWheelScale = .3f;
+    public float scrollScale = .1f;
+
     private PlayerBase PlayerBase;
 
     private Camera mainCamera;
@@ -37,7 +41,8 @@ public class PlayerController : MonoBehaviour
         inventoryController = GameObject.FindObjectOfType<InventoryController>();
         PlayerBase = GameObject.FindObjectOfType<PlayerBase>();
 
-        if(currencyDisplay == null){
+        if (currencyDisplay == null)
+        {
             currencyDisplay = GameObject.FindObjectOfType<CurrencyDisplay>();
         }
         currencyDisplay.UpdateText(CollectedCurrency);
@@ -52,23 +57,89 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Disable PlayerController Input events when developer tools is enabled, to change behavior - Probably a better way to do this
-        if(isDeveloperToolsEnabled) { return; }
+        if (isDeveloperToolsEnabled) { return; }
 
         var selectTowerButtonDown = Input.GetButtonUp("LeftClick");
-        if( selectTowerButtonDown ) {
+        if (selectTowerButtonDown)
+        {
             SelectTile();
+        }
+
+
+        // Camera Controls
+        if (Input.mouseScrollDelta.y != 0)
+        {
+            var forward = mainCamera.transform.forward;
+            var scrollWheelDelta = Input.mouseScrollDelta.y * scrollWheelScale;
+            var translate = forward * scrollWheelDelta;
+            mainCamera.transform.Translate(translate, Space.World);
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            var forward = mainCamera.transform.forward;
+            var translate = forward * scrollScale;
+            mainCamera.transform.Translate(translate, Space.World);
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            var backward = mainCamera.transform.forward * -1;
+            var translate = backward * scrollScale;
+            mainCamera.transform.Translate(translate, Space.World);
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            var left = mainCamera.transform.right * -1;
+            var translate = left * scrollScale;
+            mainCamera.transform.Translate(translate, Space.World);
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            var right = mainCamera.transform.right;
+            var translate = right * scrollScale;
+            mainCamera.transform.Translate(translate, Space.World);
+        }
+
+
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            var up = mainCamera.transform.up;
+            var translate = up * scrollScale;
+            mainCamera.transform.Translate(translate, Space.World);
+        }
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+            var down = mainCamera.transform.up * -1;
+            var translate = down * scrollScale;
+            mainCamera.transform.Translate(translate, Space.World);
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            var mouseX = Input.GetAxisRaw("Mouse X") * 2;
+            var mouseY = Input.GetAxisRaw("Mouse Y") * -2;
+            mainCamera.transform.Rotate(new Vector3(mouseY, 0, 0), Space.Self);
+            mainCamera.transform.Rotate(new Vector3(0, mouseX, 0), Space.World);
         }
     }
 
-    public void SelectTile(){
+    public void SelectTile()
+    {
         var objectSelected = GetClickedGameObject();
-        if( objectSelected == null ) {
+        if (objectSelected == null)
+        {
             DeselectTile();
             return;
         }
 
         var tile = objectSelected.GetComponent<PlaceableTile>();
-        if(tile) {
+        if (tile)
+        {
             DeselectTile();
             selectedTile = tile;
             selectedOverlay.transform.position = selectedTile.GetPlacementPosition() + new Vector3(0, 0.0002f, 0);
@@ -76,9 +147,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void PlaceTower(){
-        if( selectedTile == null || !inventoryController.CanBuyTower(CollectedCurrency)) { return; }
-        else {
+    public void PlaceTower()
+    {
+        if (selectedTile == null || !inventoryController.CanBuyTower(CollectedCurrency)) { return; }
+        else
+        {
             var costOfTower = inventoryController.GetCurrentTowerCost();
             inventoryController.BuildSelectedTower(selectedTile);
             inventoryController.BuyTower();
@@ -87,10 +160,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void PlaceTowerWeapon() {
-        if( selectedTile == null || !inventoryController.CanBuyWeapon(CollectedCurrency)) { return; }
+    public void PlaceTowerWeapon()
+    {
+        if (selectedTile == null || !inventoryController.CanBuyWeapon(CollectedCurrency)) { return; }
         var tower = selectedTile.GetPlacedTower();
-        if( tower == null ) { return; }
+        if (tower == null) { return; }
 
         var costOfWeapon = inventoryController.GetCurrentWeaponCost();
         inventoryController.BuildSelectedWeapon(tower);
@@ -99,32 +173,38 @@ public class PlayerController : MonoBehaviour
         currencyDisplay.UpdateText(CollectedCurrency);
     }
 
-    public void RewardCurrency(int rewardValue){
+    public void RewardCurrency(int rewardValue)
+    {
         CollectedCurrency += rewardValue;
         currencyDisplay.UpdateText(CollectedCurrency);
     }
 
-    public void TakeDamage(int damage){
+    public void TakeDamage(int damage)
+    {
         BaseHealth -= damage;
 
-        if( BaseHealth <= 0 && PlayerBase != null ){
+        if (BaseHealth <= 0 && PlayerBase != null)
+        {
             Destroy(PlayerBase.gameObject);
             GameOver();
         }
     }
 
-    private void GameOver() {
+    private void GameOver()
+    {
         InGameUI.SetActive(false);
         GameOverUI.SetActive(true);
     }
 
-    private void DeselectTile() {
-        if( selectedOverlay == null ) { return; }
+    private void DeselectTile()
+    {
+        if (selectedOverlay == null) { return; }
         selectedOverlay.SetActive(false);
         selectedTile = null;
     }
 
-    private GameObject GetClickedGameObject(){
+    private GameObject GetClickedGameObject()
+    {
         return MouseUtility.SelectGameObjectWithRayCast(mainCamera, Input.mousePosition, 100);
     }
 }
