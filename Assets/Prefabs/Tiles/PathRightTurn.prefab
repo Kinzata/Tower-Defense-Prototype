@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 264392674371982949}
   - component: {fileID: 264392674373080229}
   m_Layer: 12
-  m_Name: 04_tile_cornerSquare
-  m_TagString: Untagged
+  m_Name: PathRightTurn
+  m_TagString: PathTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - GameOverUI
   - InGameUI
+  - SpawnerTile
+  - PathTile
   layers:
   - Default
   - TransparentFX

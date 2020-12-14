@@ -1,37 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
-public class LevelPath : MonoBehaviour {
+public class LevelPath : MonoBehaviour
+{
+    private Waypoint[] waypoints;
 
-	private List<GameObject> waypointObjects;
-	private Waypoint[] waypoints;
+    // Use this for initialization
+    void Start()
+    {
+    }
 
-	// Use this for initialization
-	void Start () {
-		Debug.Log("Setup: LevelPath - Starting");
-		InitializeWaypointObjects();
-		waypoints = BuildWaypointArray();
-		Debug.Log("Setup: LevelPath - Complete");
-	}
-
-	public Waypoint GetWaypointAt(int index) {
-		var waypoint = waypoints.ElementAtOrDefault(index);
-		return waypoint;
-	}
-
-	private void InitializeWaypointObjects(){
-		waypointObjects = new List<GameObject>();
-		foreach( Transform child in transform) {
-			waypointObjects.Add(child.gameObject);
+    public void SetupWaypoints(Vector3[] points)
+    {
+		var waypointsList = new List<Waypoint>();
+        for (int i = 0; i < points.Length; i++)
+        {
+            var waypoint = new Waypoint(i, points[i], this);
+			waypointsList.Add(waypoint);
 		}
-	}
-	
-	private Waypoint[] BuildWaypointArray() {
-		return waypointObjects
-		.OrderBy(obj => obj.name)
-		.Select((obj, index) => new Waypoint(index, obj.transform.position, this))
-		.ToArray();	
-	} 
+		waypoints = waypointsList.ToArray();
+    }
+
+    public Waypoint GetWaypointAt(int index)
+    {
+        var waypoint = waypoints.ElementAtOrDefault(index);
+        return waypoint;
+    }
+
+    void OnDrawGizmos()
+    {
+        for (int i = 0; i < waypoints.Length; i++)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(waypoints[i].point, 0.05f);
+        }
+    }
 }

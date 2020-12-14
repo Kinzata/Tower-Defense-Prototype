@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &40267070678369584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 40267070678369585}
+  - component: {fileID: 40267070678369586}
+  m_Layer: 0
+  m_Name: MapLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &40267070678369585
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40267070678369584}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &40267070678369586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40267070678369584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e80d2e1b863f82f4a8a6d2e02821dad7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grassTile: {fileID: 933165323593972635, guid: 92080bf727ba97846b6b12897234777c,
+    type: 3}
+  spawnTile: {fileID: 4309517856684623007, guid: 97b8640fa0349fa4fa16dabc445454da,
+    type: 3}
+  baseTile: {fileID: 9092376706831813908, guid: 1914d803dc0854544b9026dbe905a277,
+    type: 3}
+  pathStraightTile: {fileID: 1617856950831996580, guid: c75ff24100cc2b5478d901e383756804,
+    type: 3}
+  pathRightTurnTile: {fileID: 264392674371144293, guid: 44a14e9171a2d144abbbeb831592c3e6,
+    type: 3}
+  crystalBase: {fileID: 178784932299983670, guid: 286bcbfec722bdb4690a1b5234bea0ad,
+    type: 3}
+  waveSpawner: {fileID: 833252813802869745, guid: 85f6a5a335abacc46881447695db53de,
+    type: 3}
+  spawnerTag: SpawnerTile
+  pathTag: PathTile

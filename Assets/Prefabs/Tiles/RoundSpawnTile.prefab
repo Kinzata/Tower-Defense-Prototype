@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4309517856683333791}
   - component: {fileID: 4309517856682367583}
   m_Layer: 12
-  m_Name: 00_tile_endRoundSpawn
-  m_TagString: Untagged
+  m_Name: RoundSpawnTile
+  m_TagString: SpawnerTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

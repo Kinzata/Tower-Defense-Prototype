@@ -21,7 +21,7 @@ public class GridCanvas : MonoBehaviour
         var rect = GetComponent<RectTransform>();
         width = rect.rect.width;
         height = rect.rect.height;
-        InitializeGrid();
+        InitializeGrid(); // This needs to init on a trigger
     }
 
     public void ToggleGrid(){

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 
@@ -20,6 +21,11 @@ public class MapLoader : MonoBehaviour
     public GameObject baseTile;
     public GameObject pathStraightTile;
     public GameObject pathRightTurnTile;
+    public GameObject crystalBase;
+    public GameObject waveSpawner;
+
+    public string spawnerTag = "SpawnerTile";
+    public string pathTag = "PathTile";
 
     // Start is called before the first frame update
     void Start()
@@ -28,17 +34,76 @@ public class MapLoader : MonoBehaviour
         width = mapTexture.width;
         height = mapTexture.height;
 
-        LoadTiles();
+        Setup();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Setup()
     {
+        var tilesObject = new GameObject("Tiles");
+        var worldObject = new GameObject("World");
+        var levelPathObject = new GameObject("LevelPath");
+        levelPathObject.AddComponent<LevelPath>();
 
+        worldObject.transform.SetParent(tilesObject.transform);
+        levelPathObject.transform.SetParent(tilesObject.transform);
+
+        var groundTiles = LoadGroundTiles();
+        foreach (var groundTile in groundTiles)
+        {
+            groundTile.transform.SetParent(worldObject.transform);
+        }
+
+        var pathTiles = LoadPathTiles();
+        foreach (var pathTile in pathTiles)
+        {
+            pathTile.transform.SetParent(levelPathObject.transform);
+        }
+
+        var waypoints = BuildWaypoints();
+        var levelPath = levelPathObject.GetComponent<LevelPath>();
+        levelPath.SetupWaypoints(waypoints.ToArray());
+
+        Instantiate(waveSpawner, Vector3.zero, Quaternion.identity);
     }
 
-    private void LoadTiles()
+    private List<Vector3> BuildWaypoints() {
+        var points = new List<Vector3>();
+
+        // Find Spawners - for now assume one
+        var spawner = GameObject.FindGameObjectWithTag(spawnerTag);
+        points.Add(spawner.transform.position);
+
+        var pathPoints = GameObject.FindGameObjectsWithTag(pathTag).Select(obj => obj.transform.position).ToList();
+
+        var currentPoint = spawner.transform.position;
+        int i = 0;
+        // While we haven't checked every path tile...
+        while(i < pathPoints.Count) {
+            // Find adjacent points
+            var adjacentPoints = pathPoints
+                .Where(point => !points.Contains(point))
+                // Account for slight distance error, though it shouldn't exist
+                .Where(point => Vector3.Distance(point, currentPoint) <= 1.1f)
+                .Select(point => point)
+                .ToList();
+
+            // Where should only find one
+            if( adjacentPoints.Count() > 1 ) {throw new System.Exception("Too many adjacent paths found..."); }
+
+            var adjacentPoint = adjacentPoints.First();
+
+            // Add point to the list, mark as current and continue
+            points.Add(adjacentPoint);
+            currentPoint = adjacentPoint;
+            i++;
+        }
+
+        return points;
+    }
+
+    private GameObject[] LoadGroundTiles()
     {
+        var tiles = new List<GameObject>();
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -46,25 +111,43 @@ public class MapLoader : MonoBehaviour
                 Color pixel = mapTexture.GetPixel(x, y);
                 if (pixel == grassColor)
                 {
-                    Instantiate(grassTile, new Vector3(x, 0, y), Quaternion.identity);
-                }
-                else if (pixel == spawnColor)
-                {
-                    CreateSpawnerAt(x, y);
-                }
-                else if (pixel == baseColor)
-                {
-                    CreateBaseAt(x, y);
-                }
-                else if (pixel == pathColor)
-                {
-                    CreatePathAt(x, y);
+                    var tile = Instantiate(grassTile, new Vector3(x, 0, y), Quaternion.identity);
+                    tiles.Add(tile);
                 }
             }
         }
+        return tiles.ToArray();
     }
 
-    private void CreateSpawnerAt(int x, int y)
+    private List<GameObject> LoadPathTiles()
+    {
+        var tiles = new List<GameObject>();
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Color pixel = mapTexture.GetPixel(x, y);
+                if (pixel == spawnColor)
+                {
+                    var tile = CreateSpawnerAt(x, y);
+                    tiles.Add(tile);
+                }
+                else if (pixel == baseColor)
+                {
+                    var tile = CreateBaseAt(x, y);
+                    tiles.Add(tile);
+                }
+                else if (pixel == pathColor)
+                {
+                    var tile = CreatePathAt(x, y);
+                    tiles.Add(tile);
+                }
+            }
+        }
+        return tiles;
+    }
+
+    private GameObject CreateSpawnerAt(int x, int y)
     {
         var directionOfNextPath = GetAdjacentDirectionsFrom(x, y);
         var rotationFactor = 0;
@@ -79,10 +162,10 @@ public class MapLoader : MonoBehaviour
         }
         var quat = Quaternion.Euler(0, rotationFactor * 90, 0);
 
-        Instantiate(spawnTile, new Vector3(x, 0, y), quat);
+        return Instantiate(spawnTile, new Vector3(x, 0, y), quat);
     }
 
-    private void CreateBaseAt(int x, int y)
+    private GameObject CreateBaseAt(int x, int y)
     {
         var directionOfNextPath = GetAdjacentDirectionsFrom(x, y);
         var rotationFactor = 0;
@@ -97,10 +180,11 @@ public class MapLoader : MonoBehaviour
         }
         var quat = Quaternion.Euler(0, rotationFactor * 90, 0);
 
-        Instantiate(baseTile, new Vector3(x, 0, y), quat);
+        Instantiate(crystalBase, new Vector3(x, .15f, y), Quaternion.identity);
+        return Instantiate(baseTile, new Vector3(x, 0, y), quat);
     }
 
-    private void CreatePathAt(int x, int y)
+    private GameObject CreatePathAt(int x, int y)
     {
         var directionOfNextPath = GetAdjacentDirectionsFrom(x, y);
         var rotationFactor = 0;
@@ -118,7 +202,7 @@ public class MapLoader : MonoBehaviour
         }
         var quat = Quaternion.Euler(0, rotationFactor * 90, 0);
 
-        Instantiate(pathTileToCreate, new Vector3(x, 0, y), quat);
+        return Instantiate(pathTileToCreate, new Vector3(x, 0, y), quat);
     }
 
     private TilePathDirection GetAdjacentDirectionsFrom(int x, int y)

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1617856950828991140}
   - component: {fileID: 1617856950829989988}
   m_Layer: 12
-  m_Name: 01_tile_straight
-  m_TagString: Untagged
+  m_Name: PathStraight
+  m_TagString: PathTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

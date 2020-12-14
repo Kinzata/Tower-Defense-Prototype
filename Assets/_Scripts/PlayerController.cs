@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour
         inventoryController = GameObject.FindObjectOfType<InventoryController>();
         PlayerBase = GameObject.FindObjectOfType<PlayerBase>();
 
+        if(currencyDisplay == null){
+            currencyDisplay = GameObject.FindObjectOfType<CurrencyDisplay>();
+        }
         currencyDisplay.UpdateText(CollectedCurrency);
 
         InGameUI = GameObject.FindGameObjectWithTag("InGameUI");
