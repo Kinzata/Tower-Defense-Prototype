@@ -24,7 +24,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Controls")]
     public float scrollWheelScale = .3f;
-    public float scrollScale = .1f;
+    public float scrollScale = .05f;
+    public float rotateScale = 2f;
 
     private PlayerBase PlayerBase;
 
@@ -67,6 +68,7 @@ public class PlayerController : MonoBehaviour
 
 
         // Camera Controls
+        // Zoom In/Out
         if (Input.mouseScrollDelta.y != 0)
         {
             var forward = mainCamera.transform.forward;
@@ -74,55 +76,53 @@ public class PlayerController : MonoBehaviour
             var translate = forward * scrollWheelDelta;
             mainCamera.transform.Translate(translate, Space.World);
         }
-
+        // Zoom In
         if (Input.GetKey(KeyCode.W))
         {
             var forward = mainCamera.transform.forward;
             var translate = forward * scrollScale;
             mainCamera.transform.Translate(translate, Space.World);
         }
-
+        // Zoom Out
         if (Input.GetKey(KeyCode.S))
         {
             var backward = mainCamera.transform.forward * -1;
             var translate = backward * scrollScale;
             mainCamera.transform.Translate(translate, Space.World);
         }
-
+        // Left
         if (Input.GetKey(KeyCode.A))
         {
             var left = mainCamera.transform.right * -1;
             var translate = left * scrollScale;
             mainCamera.transform.Translate(translate, Space.World);
         }
-
+        // Right
         if (Input.GetKey(KeyCode.D))
         {
             var right = mainCamera.transform.right;
             var translate = right * scrollScale;
             mainCamera.transform.Translate(translate, Space.World);
         }
-
-
-
+        // Up
         if (Input.GetKey(KeyCode.E))
         {
             var up = mainCamera.transform.up;
             var translate = up * scrollScale;
             mainCamera.transform.Translate(translate, Space.World);
         }
-
+        // Down
         if (Input.GetKey(KeyCode.Q))
         {
             var down = mainCamera.transform.up * -1;
             var translate = down * scrollScale;
             mainCamera.transform.Translate(translate, Space.World);
         }
-
+        // Rotate
         if (Input.GetMouseButton(1))
         {
-            var mouseX = Input.GetAxisRaw("Mouse X") * 2;
-            var mouseY = Input.GetAxisRaw("Mouse Y") * -2;
+            var mouseX = Input.GetAxisRaw("Mouse X") * rotateScale;
+            var mouseY = Input.GetAxisRaw("Mouse Y") * -rotateScale;
             mainCamera.transform.Rotate(new Vector3(mouseY, 0, 0), Space.Self);
             mainCamera.transform.Rotate(new Vector3(0, mouseX, 0), Space.World);
         }
