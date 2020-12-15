@@ -11,7 +11,9 @@ public class GridCanvas : MonoBehaviour
 
     [Header("Grid Units")]
     [SerializeField] float unitsPerGrid = 1f;
-    [SerializeField] Vector2 startPosition = new Vector2(0,0);
+    [SerializeField] Vector2 startPosition = new Vector2(0, 0);
+
+    private bool hasInitialized = false;
 
     private float width = 0f;
     private float height = 0f;
@@ -21,29 +23,35 @@ public class GridCanvas : MonoBehaviour
         var rect = GetComponent<RectTransform>();
         width = rect.rect.width;
         height = rect.rect.height;
-        InitializeGrid(); // This needs to init on a trigger
     }
 
-    public void ToggleGrid(){
+    public void ToggleGrid()
+    {
+        if (!hasInitialized)
+        {
+            InitializeGrid();
+            return;
+        }
         gameObject.SetActive(!gameObject.activeSelf);
     }
 
-    private void InitializeGrid() {
+    public void InitializeGrid()
+    {
         var x = startPosition.x;
         var y = startPosition.y;
 
         var maxX = (width / 2) - x;
         var maxY = (height / 2) - y;
 
-        while( x <= maxX ) {
+        while (x <= maxX)
+        {
             y = startPosition.y;
-            while( y <= maxY ) {
-
-                var position = new Vector3(x,y,0);
+            while (y <= maxY)
+            {
+                var position = new Vector3(x, y, 0);
                 var isPlaceableTile = CheckForObjectType(buildableTileComponentName, new Vector3(transform.position.x + x, transform.position.y, transform.position.z + y), Vector3.down);
-
                 y++;
-                if( !isPlaceableTile) { continue; }
+                if (!isPlaceableTile) { continue; }
                 var obj = Instantiate(gridTileSprite, position, Quaternion.identity);
                 obj.transform.SetParent(transform, false);
                 var sprite = obj.GetComponent<SpriteRenderer>();
@@ -51,23 +59,27 @@ public class GridCanvas : MonoBehaviour
             }
             x++;
         }
+        hasInitialized = true;
     }
 
-    void OnDrawGizmos() {
-        Gizmos.DrawSphere(new Vector3(-1, 0.2001f, 0), 0.02f);
-        Gizmos.DrawLine(new Vector3(-1, 0.2001f, 0), new Vector3(-1, -1, 0));
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(new Vector3(0, 0.2001f, 0), 0.02f);
+        Gizmos.DrawLine(new Vector3(0, 0.2001f, 0), new Vector3(-1, -1, 0));
     }
 
 
     // Will search for a terrain-tagged game object with given component name using the given
     // position and direction.  Returns true if found.
-    private bool CheckForObjectType(string componentName, Vector3 position, Vector3 direction) {
+    private bool CheckForObjectType(string componentName, Vector3 position, Vector3 direction)
+    {
         RaycastHit hit;
         var didHit = Physics.Raycast(position, direction, out hit, 1, 1 << LayerMask.NameToLayer("Terrain"));
-        if( didHit )
+        if (didHit)
         {
             var objectType = hit.transform.gameObject.GetComponent(componentName);
-            if( objectType != null ) {
+            if (objectType != null)
+            {
                 return true;
             }
         }
